@@ -18,62 +18,96 @@ namespace CinemaApp.Data.Repository
 
         public TType GetById(TId id)
         {
-            throw new NotImplementedException();
+            TType entity = this.dbSet
+                .Find(id);
+
+            return entity;
         }
 
-        public Task<TType> GetByIdAsync(TId id)
+        public async Task<TType> GetByIdAsync(TId id)
         {
-            throw new NotImplementedException();
+            TType entity = await this.dbSet
+                .FindAsync(id);
+
+            return entity;
         }
 
-        public IEnumerable<TType> GetAll()
-        {
-            throw new NotImplementedException();
-        }
+        public IEnumerable<TType> GetAll() => this.dbSet.ToArray();
 
-        public Task<IEnumerable<TType>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<IEnumerable<TType>> GetAllAsync() =>
+            await this.dbSet.ToArrayAsync();
 
+        public IEnumerable<TType> GetAllAttached() => this.dbSet.AsQueryable();
         public void Add(TType entity)
         {
-            throw new NotImplementedException();
+            this.dbSet.Add(entity);
+            this.dbContext.SaveChanges();
         }
 
-        public Task AddAsync(TType entity)
+        public async Task AddAsync(TType entity)
         {
-            throw new NotImplementedException();
+            await this.dbSet.AddAsync(entity);
+            await this.dbContext.SaveChangesAsync();
         }
 
         public bool Delete(TId id)
         {
-            throw new NotImplementedException();
+            TType entity = this.GetById(id);
+            if (entity == null)
+            {
+                return false;
+            }
+
+            this.dbSet.Remove(entity);
+            this.dbContext.SaveChanges();
+
+            return true;
         }
 
-        public Task<bool> DeleteAsync(TId id)
+        public async Task<bool> DeleteAsync(TId id)
         {
-            throw new NotImplementedException();
-        }
+            TType entity = await this.GetByIdAsync(id);
+            if (entity == null)
+            {
+                return false;
+            }
 
-        public bool SoftDelete(TId id)
-        {
-            throw new NotImplementedException();
-        }
+            this.dbSet.Remove(entity);
+            await this.dbContext.SaveChangesAsync();
 
-        public Task<bool> SoftDeleteAsync(TId id)
-        {
-            throw new NotImplementedException();
+            return true;
         }
 
         public bool Update(TType entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                this.dbSet.Attach(entity);
+                this.dbContext.Entry(entity).State = EntityState.Modified;
+                this.dbContext.SaveChanges();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        public Task<bool> UpdateAsync(TType entity)
+        public async Task<bool> UpdateAsync(TType entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                this.dbSet.Attach(entity);
+                this.dbContext.Entry(entity).State = EntityState.Modified;
+                await this.dbContext.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }
