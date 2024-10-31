@@ -1,6 +1,8 @@
 using CinemaApp.Data;
 using CinemaApp.Data.Models;
+using CinemaApp.Services.Mapping;
 using CinemaApp.Web.Infrastructure.Extensions;
+using CinemaApp.Web.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,6 +38,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 WebApplication app = builder.Build();
+
+AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).Assembly);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
