@@ -3,14 +3,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CinemaApp.Data.Repository
 {
-    public class Repository<TType, TId> : IRepository<TType, TId>
+    public class BaseRepository<TType, TId> : IRepository<TType, TId>
         where TType : class
     {
 
         private readonly CinemaDbContext dbContext;
         private readonly DbSet<TType> dbSet;
 
-        public Repository(CinemaDbContext dbContext)
+        public BaseRepository(CinemaDbContext dbContext)
         {
             this.dbContext = dbContext;
             this.dbSet = this.dbContext.Set<TType>();
