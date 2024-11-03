@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using CinemaApp.Data;
 using CinemaApp.Data.Models;
+using CinemaApp.Data.Repository.Interfaces;
 using CinemaApp.Web.ViewModels.Cinema;
 using CinemaApp.Web.ViewModels.Movie;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +14,12 @@ namespace CinemaApp.Web.Controllers
     public class MovieController : BaseController
     {
         private readonly CinemaDbContext dbContext;
+        private IRepository<Movie, Guid> movieRepository;
 
-        public MovieController(CinemaDbContext dbContext)
+        public MovieController(CinemaDbContext dbContext, IRepository<Movie, Guid> movieRepository)
         {
             this.dbContext = dbContext;
+            this.movieRepository = movieRepository;
         }
 
         [HttpGet]

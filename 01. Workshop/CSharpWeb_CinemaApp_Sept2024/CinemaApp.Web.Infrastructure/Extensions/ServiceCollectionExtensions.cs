@@ -10,11 +10,12 @@ namespace CinemaApp.Web.Infrastructure.Extensions
     {
         public static void RegisterRepositories(this IServiceCollection services, Assembly modelsAssembly)
         {
+            // TODO: Re-write the implementation in such way that the user must create a single class for every repository
             Type[] typesToExclude = new Type[] { typeof(ApplicationUser) };
             Type[] modelTypes = modelsAssembly
                 .GetTypes()
-                .Where(t => !t.IsAbstract && !t.IsInterface
-                         && !t.Name.ToLower().EndsWith("attribute"))
+                .Where(t => !t.IsAbstract && !t.IsInterface &&
+                            !t.Name.ToLower().EndsWith("attribute"))
                 .ToArray();
 
             foreach (Type type in modelTypes)
@@ -23,15 +24,15 @@ namespace CinemaApp.Web.Infrastructure.Extensions
                 {
                     Type repositoryInterface = typeof(IRepository<,>);
                     Type repositoryInstanceType = typeof(BaseRepository<,>);
-                    PropertyInfo idPropInfo = type
+                    PropertyInfo? idPropInfo = type
                         .GetProperties()
-                        .Where(p => p.Name.ToLower() == "Id")
+                        .Where(p => p.Name.ToLower() == "id")
                         .SingleOrDefault();
 
                     Type[] constructArgs = new Type[2];
                     constructArgs[0] = type;
 
-                    if (idPropInfo != null)
+                    if (idPropInfo == null)
                     {
                         constructArgs[1] = typeof(object);
                     }
@@ -39,7 +40,8 @@ namespace CinemaApp.Web.Infrastructure.Extensions
                     {
                         constructArgs[1] = idPropInfo.PropertyType;
                     }
-                    repositoryInterface = repositoryInterface.MakeGenericType(new Type[] { type, typeof(object) });
+
+                    repositoryInterface = repositoryInterface.MakeGenericType(constructArgs);
                     repositoryInstanceType = repositoryInstanceType.MakeGenericType(constructArgs);
 
                     services.AddScoped(repositoryInterface, repositoryInstanceType);
