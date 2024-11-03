@@ -3,10 +3,10 @@ using static CinemaApp.Common.EntityValidationConstants.Movie;
 using static CinemaApp.Common.EntityValidationMessages.Movie;
 namespace CinemaApp.Web.ViewModels.Movie
 {
-    public class AddMovieFromModel
+    public class AddMovieFormModel
     {
 
-        public AddMovieFromModel()
+        public AddMovieFormModel()
         {
             this.ReleaseDate = DateTime.UtcNow.ToString(ReleaseDateFormat);
         }

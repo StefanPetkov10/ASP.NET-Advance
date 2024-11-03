@@ -37,7 +37,7 @@ namespace CinemaApp.Data.Repository
         public async Task<IEnumerable<TType>> GetAllAsync() =>
             await this.dbSet.ToArrayAsync();
 
-        public IEnumerable<TType> GetAllAttached() => this.dbSet.AsQueryable();
+        public IQueryable<TType> GetAllAttached() => this.dbSet.AsQueryable();
         public void Add(TType entity)
         {
             this.dbSet.Add(entity);

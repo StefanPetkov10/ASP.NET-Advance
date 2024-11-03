@@ -8,7 +8,7 @@
         IEnumerable<TType> GetAll();
         Task<IEnumerable<TType>> GetAllAsync();
 
-        IEnumerable<TType> GetAllAttached();
+        IQueryable<TType> GetAllAttached();
 
         void Add(TType entity);
         Task AddAsync(TType entity);

@@ -39,7 +39,7 @@ namespace CinemaApp.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(AddMovieFromModel inputModel)
+        public async Task<IActionResult> Create(AddMovieFormModel inputModel)
         {
             // TODO: Add form model + validation
             if (this.ModelState.IsValid == false)

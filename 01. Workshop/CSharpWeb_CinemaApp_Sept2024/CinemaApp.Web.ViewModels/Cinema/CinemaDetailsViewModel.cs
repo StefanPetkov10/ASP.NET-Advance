@@ -10,5 +10,6 @@ namespace CinemaApp.Web.ViewModels.Cinema
 
         public IEnumerable<CinemaMovieViewModel> Movies { get; set; } =
             new HashSet<CinemaMovieViewModel>();
+
     }
 }
