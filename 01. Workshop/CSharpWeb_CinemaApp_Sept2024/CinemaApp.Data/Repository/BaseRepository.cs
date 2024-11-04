@@ -31,6 +31,14 @@ namespace CinemaApp.Data.Repository
 
             return entity;
         }
+        public async Task<TType> GetByIdAsync(params TId[] id)
+        {
+            //Temp patch... Fix ASAP
+            TType entity = await this.dbSet
+                .FindAsync(id[0], id[1]);
+
+            return entity;
+        }
 
         public IEnumerable<TType> GetAll() => this.dbSet.ToArray();
 
@@ -38,6 +46,7 @@ namespace CinemaApp.Data.Repository
             await this.dbSet.ToArrayAsync();
 
         public IQueryable<TType> GetAllAttached() => this.dbSet.AsQueryable();
+
         public void Add(TType entity)
         {
             this.dbSet.Add(entity);
@@ -47,6 +56,18 @@ namespace CinemaApp.Data.Repository
         public async Task AddAsync(TType entity)
         {
             await this.dbSet.AddAsync(entity);
+            await this.dbContext.SaveChangesAsync();
+        }
+
+        public void AddRange(TType[] entities)
+        {
+            this.dbSet.AddRange(entities);
+            this.dbContext.SaveChanges();
+        }
+
+        public async Task AddRangeAsync(TType[] entities)
+        {
+            await this.AddRangeAsync(entities);
             await this.dbContext.SaveChangesAsync();
         }
 
@@ -109,5 +130,7 @@ namespace CinemaApp.Data.Repository
                 return false;
             }
         }
+
+
     }
 }

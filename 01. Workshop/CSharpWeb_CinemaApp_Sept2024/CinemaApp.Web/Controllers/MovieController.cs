@@ -117,7 +117,13 @@ namespace CinemaApp.Web.Controllers
                 return this.RedirectToAction(nameof(Index));
             }
 
+            bool result = await this.movieService
+                .AddMovieToCinemasAsync(movieGuid, model);
 
+            if (result == false)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
 
             return this.RedirectToAction(nameof(Index), "Cinema");
         }

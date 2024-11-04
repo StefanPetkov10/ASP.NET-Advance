@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CinemaApp.Services.Data
 {
-    public class CinemaService : ICinemaService
+    public class CinemaService : BaseService, ICinemaService
     {
         private IRepository<Cinema, Guid> cinemaRepository;
 
