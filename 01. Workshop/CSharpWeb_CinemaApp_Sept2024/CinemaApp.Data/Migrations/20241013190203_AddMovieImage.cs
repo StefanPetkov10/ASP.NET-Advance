@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -49,7 +48,7 @@ namespace CinemaApp.Data.Migrations
                 type: "nvarchar(2083)",
                 maxLength: 2083,
                 nullable: true,
-                defaultValue: "~/images/no-image.jpg");
+                defaultValue: "/images/no-image.jpg");
 
             migrationBuilder.InsertData(
                 table: "Cinemas",
