@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
 using static CinemaApp.Common.EntityValidationConstants.Cinema;
 
 namespace CinemaApp.Web.ViewModels.Cinema
@@ -20,5 +19,6 @@ namespace CinemaApp.Web.ViewModels.Cinema
         public string Location { get; set; } = null!;
 
         public bool IsSelected { get; set; }
+
     }
 }

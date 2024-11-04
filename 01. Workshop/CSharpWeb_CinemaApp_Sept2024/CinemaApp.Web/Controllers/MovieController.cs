@@ -1,10 +1,7 @@
 ﻿using CinemaApp.Data;
-using CinemaApp.Data.Models;
 using CinemaApp.Services.Data.Interfaces;
-using CinemaApp.Web.ViewModels.Cinema;
 using CinemaApp.Web.ViewModels.Movie;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 
 namespace CinemaApp.Web.Controllers
@@ -67,8 +64,8 @@ namespace CinemaApp.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            Movie? movie = await this.dbContext.Movies
-                .FirstOrDefaultAsync(x => x.Id == movieGuid);
+            MovieDetailsViewModel? movie =
+                await this.movieService.GetMovieDetailsByIdAsync(movieGuid);
 
             if (movie == null)
             {
@@ -94,32 +91,13 @@ namespace CinemaApp.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            Movie? movie = await this.dbContext.Movies
-                .FirstOrDefaultAsync(x => x.Id == movieGuid);
-            if (movie == null)
+            AddMovieToCinemaInputModel? viewModel =
+                 await this.movieService.AddMovieToCinemaInputModelByIdAsync(movieGuid);
+
+            if (viewModel == null)
             {
                 return RedirectToAction(nameof(Index));
             }
-
-            AddMovieToCinemaInputModel viewModel = new AddMovieToCinemaInputModel
-            {
-                Id = id!,
-                MovieTitle = movie.Title,
-                Cinemas = await this.dbContext.Cinemas
-                .Include(cm => cm.CinemaMovies)
-                .ThenInclude(m => m.Movie)
-                    .Select(c => new CinemaCheckBoxItemInputModel
-                    {
-                        Id = c.Id.ToString(),
-                        Name = c.Name,
-                        Location = c.Location,
-                        //IsSelected = false
-                        IsSelected = c.CinemaMovies
-                        .Any(cm => cm.MovieId == movieGuid &&
-                                   cm.IsDeleted == false)
-                    })
-                    .ToArrayAsync()
-            };
 
             return View(viewModel);
         }
@@ -139,67 +117,7 @@ namespace CinemaApp.Web.Controllers
                 return this.RedirectToAction(nameof(Index));
             }
 
-            Movie? movie = await this.dbContext
-                .Movies
-                .FirstOrDefaultAsync(m => m.Id == movieGuid);
-            if (movie == null)
-            {
-                return this.RedirectToAction(nameof(Index));
-            }
 
-            ICollection<CinemaMovie> entitiesToAdd = new List<CinemaMovie>();
-            foreach (CinemaCheckBoxItemInputModel cinemaInputModel in model.Cinemas)
-            {
-                Guid cinemaGuid = Guid.Empty;
-                bool isCinemaGuidValid = this.IsGuidIdValid(cinemaInputModel.Id, ref cinemaGuid);
-                if (!isCinemaGuidValid)
-                {
-                    this.ModelState.AddModelError(string.Empty, "Invalid cinema selected!");
-                    return this.View(model);
-                }
-
-                Cinema? cinema = await this.dbContext
-                    .Cinemas
-                    .FirstOrDefaultAsync(c => c.Id == cinemaGuid);
-                if (cinema == null)
-                {
-                    this.ModelState.AddModelError(string.Empty, "Invalid cinema selected!");
-                    return this.View(model);
-                }
-
-                CinemaMovie? cinemaMovie = await this.dbContext
-                    .CinemasMovies
-                    .FirstOrDefaultAsync(cm => cm.MovieId == movieGuid &&
-                                               cm.CinemaId == cinemaGuid);
-
-                if (cinemaInputModel.IsSelected)
-                {
-                    if (cinemaMovie == null)
-                    {
-                        entitiesToAdd.Add(new CinemaMovie()
-                        {
-                            Cinema = cinema,
-                            Movie = movie
-                        });
-                    }
-                    else
-                    {
-                        cinemaMovie.IsDeleted = false;
-                    }
-                }
-                else
-                {
-                    if (cinemaMovie != null)
-                    {
-                        cinemaMovie.IsDeleted = true;
-                    }
-                }
-
-                await this.dbContext.SaveChangesAsync();
-            }
-
-            await this.dbContext.CinemasMovies.AddRangeAsync(entitiesToAdd);
-            await this.dbContext.SaveChangesAsync();
 
             return this.RedirectToAction(nameof(Index), "Cinema");
         }
