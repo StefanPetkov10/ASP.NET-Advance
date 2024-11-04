@@ -1,12 +1,10 @@
-﻿using System.Globalization;
-using CinemaApp.Data;
+﻿using CinemaApp.Data;
 using CinemaApp.Data.Models;
-using CinemaApp.Data.Repository.Interfaces;
+using CinemaApp.Services.Data.Interfaces;
 using CinemaApp.Web.ViewModels.Cinema;
 using CinemaApp.Web.ViewModels.Movie;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using static CinemaApp.Common.EntityValidationConstants.Movie;
 
 
 namespace CinemaApp.Web.Controllers
@@ -14,20 +12,19 @@ namespace CinemaApp.Web.Controllers
     public class MovieController : BaseController
     {
         private readonly CinemaDbContext dbContext;
-        private IRepository<Movie, Guid> movieRepository;
+        private readonly IMovieService movieService;
 
-        public MovieController(CinemaDbContext dbContext, IRepository<Movie, Guid> movieRepository)
+        public MovieController(CinemaDbContext dbContext, IMovieService movieService)
         {
             this.dbContext = dbContext;
-            this.movieRepository = movieRepository;
+            this.movieService = movieService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            IEnumerable<Movie> allMovies = await this.dbContext
-                .Movies
-                .ToArrayAsync();
+            IEnumerable<AllMoviesViewModel> allMovies =
+                await this.movieService.GetAllMoviesAsync();
 
             return View(allMovies);
         }
@@ -48,31 +45,14 @@ namespace CinemaApp.Web.Controllers
                 return View(inputModel);
             }
 
-            bool isReleaseDateValid = DateTime.TryParseExact(inputModel.ReleaseDate,
-                ReleaseDateFormat,
-                CultureInfo.InvariantCulture,
-                DateTimeStyles.None,
-                out DateTime releseDate);
+            bool result = await this.movieService.AddMovieAsync(inputModel);
 
-            if (!isReleaseDateValid)
+            if (result == false)
             {
                 this.ModelState.AddModelError(nameof(inputModel.ReleaseDate),
                     "Invalid Release Date. The Release Date must be in the following format: MM/yyyy");
+                return View(inputModel);
             }
-
-            Movie movie = new Movie
-            {
-                Title = inputModel.Title,
-                Genre = inputModel.Genre,
-                ReleaseDate = releseDate,
-                Director = inputModel.Director,
-                Duration = inputModel.Duration,
-                Description = inputModel.Description,
-                ImageUrl = inputModel.ImageUrl
-            };
-
-            await this.dbContext.Movies.AddAsync(movie);
-            await this.dbContext.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
         }
@@ -135,7 +115,8 @@ namespace CinemaApp.Web.Controllers
                         Location = c.Location,
                         //IsSelected = false
                         IsSelected = c.CinemaMovies
-                        .Any(cm => cm.MovieId == movieGuid)
+                        .Any(cm => cm.MovieId == movieGuid &&
+                                   cm.IsDeleted == false)
                     })
                     .ToArrayAsync()
             };

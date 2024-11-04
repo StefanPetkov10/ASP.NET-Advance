@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CinemaApp.Web.ViewModels.Movie;
 
 namespace CinemaApp.Services.Data.Interfaces
 {
-    internal interface IMovieService
+    public interface IMovieService
     {
+        Task<IEnumerable<AllMoviesViewModel>> GetAllMoviesAsync();
+
+        Task<bool> AddMovieAsync(AddMovieFormModel inputModel);
     }
 }

@@ -1,5 +1,4 @@
-﻿using CinemaApp.Data;
-using CinemaApp.Services.Data.Interfaces;
+﻿using CinemaApp.Services.Data.Interfaces;
 using CinemaApp.Web.ViewModels.Cinema;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,11 +6,9 @@ namespace CinemaApp.Web.Controllers
 {
     public class CinemaController : BaseController
     {
-        private readonly CinemaDbContext dbContext;
         private readonly ICinemaService cinemaService;
-        public CinemaController(CinemaDbContext dbContext, ICinemaService cinemaService)
+        public CinemaController(ICinemaService cinemaService)
         {
-            this.dbContext = dbContext;
             this.cinemaService = cinemaService;
         }
 

@@ -1,11 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using CinemaApp.Services.Mapping;
 using static CinemaApp.Common.EntityValidationConstants.Movie;
 using static CinemaApp.Common.EntityValidationMessages.Movie;
+
 namespace CinemaApp.Web.ViewModels.Movie
 {
-    public class AddMovieFormModel
-    {
+    using AutoMapper;
+    using CinemaApp.Data.Models;
 
+    public class AddMovieFormModel : IMapTo<Movie>, IHaveCustomMappings
+    {
         public AddMovieFormModel()
         {
             this.ReleaseDate = DateTime.UtcNow.ToString(ReleaseDateFormat);
@@ -39,5 +43,12 @@ namespace CinemaApp.Web.ViewModels.Movie
 
         [MaxLength(ImageUrlMaxLength)]
         public string? ImageUrl { get; set; }
+
+        public void CreateMappings(IProfileExpression configurate)
+        {
+            configurate.CreateMap<Movie, AddMovieFormModel>()
+                .ForMember(dest => dest.ReleaseDate, opt =>
+                    opt.Ignore());
+        }
     }
 }
