@@ -131,7 +131,8 @@ namespace CinemaApp.Services.Data
                 }
 
                 CinemaMovie? cinemaMovie = await this.cinemaMovieRepository
-                    .GetByIdAsync(movieId, cinemaGuid);
+                    .FirstOrDefaultAsync(cm => cm.CinemaId == cinemaGuid &&
+                                             cm.MovieId == movieId);
 
                 if (cinemaInputModel.IsSelected)
                 {

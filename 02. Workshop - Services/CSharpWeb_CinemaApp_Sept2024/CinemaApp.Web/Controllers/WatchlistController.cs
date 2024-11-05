@@ -1,23 +1,26 @@
 ﻿using CinemaApp.Data;
 using CinemaApp.Data.Models;
+using CinemaApp.Services.Data.Interfaces;
 using CinemaApp.Web.ViewModels.Watchlist;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
-using static CinemaApp.Common.EntityValidationConstants.Movie;
+using static CinemaApp.Common.ErrorMessages.Watchlist;
 
 namespace CinemaApp.Web.Controllers
 {
     [Authorize]
     public class WatchlistController : BaseController
     {
+        private readonly IWatchlistService watchlistService;
+
         private readonly CinemaDbContext dbContext;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public WatchlistController(CinemaDbContext dbContext, UserManager<ApplicationUser> userManager)
+        public WatchlistController(IWatchlistService watchlistService, CinemaDbContext dbContext, UserManager<ApplicationUser> userManager)
         {
+            this.watchlistService = watchlistService;
             this.dbContext = dbContext;
             this.userManager = userManager;
         }
@@ -26,21 +29,13 @@ namespace CinemaApp.Web.Controllers
         public async Task<IActionResult> Index()
         {
             string userId = this.userManager.GetUserId(this.User)!;
+            if (String.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("/Identity/Account/Login");
+            }
 
-
-            IEnumerable<ApplicationUserWatchlistViewModel> watchlist = await this.dbContext
-                .UsersMovies
-                .Include(um => um.Movie)
-                .Where(um => um.ApplicationUserId.ToString().ToLower() == userId.ToLower())
-                .Select(um => new ApplicationUserWatchlistViewModel
-                {
-                    MovieId = um.MovieId.ToString(),
-                    Title = um.Movie.Title,
-                    Genre = um.Movie.Genre,
-                    ReleaseDate = um.Movie.ReleaseDate.ToString(ReleaseDateFormat),
-                    ImageUrl = um.Movie.ImageUrl,
-                })
-                .ToArrayAsync();
+            IEnumerable<ApplicationUserWatchlistViewModel> watchlist =
+                await this.watchlistService.GetUserWatchlistByUserIdAsync(userId);
 
             return this.View(watchlist);
         }
@@ -48,37 +43,19 @@ namespace CinemaApp.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddToWatchlist(string movieId)
         {
-            Guid movieGuid = Guid.Empty;
-            if (!this.IsGuidIdValid(movieId, ref movieGuid))
+            string userId = this.userManager.GetUserId(this.User)!;
+            if (String.IsNullOrEmpty(userId))
             {
-                return this.RedirectToAction(nameof(Index), "Movie");
+                return RedirectToAction("/Identity/Account/Login");
             }
 
-            Movie? movie = await this.dbContext
-                .Movies
-                .FirstOrDefaultAsync(m => m.Id == movieGuid);
-            if (movie == null)
+            bool result = await this.watchlistService
+                .AddMovieToUserWatchListAsync(movieId, userId);
+            if (!result)
             {
-                return this.RedirectToAction(nameof(Index), "Movie");
-            }
-
-            Guid userGuid = Guid.Parse(this.userManager.GetUserId(this.User)!);
-
-            bool addedToWatchlist = await this.dbContext
-                .UsersMovies
-                .AnyAsync(um => um.ApplicationUserId == userGuid
-                             && um.MovieId == movieGuid);
-
-            if (!addedToWatchlist)
-            {
-                ApplicationUserMovie userMovie = new ApplicationUserMovie
-                {
-                    ApplicationUserId = userGuid,
-                    MovieId = movieGuid
-                };
-
-                await this.dbContext.UsersMovies.AddAsync(userMovie);
-                await this.dbContext.SaveChangesAsync();
+                //TODO: Imolement a way to transfer the Error Message to the View
+                ViewData["ErrorMessage"] = AddToWatchlistNotSuccessfulMessage;
+                return this.RedirectToAction("Index", "Movie");
             }
 
             return this.RedirectToAction(nameof(Index));
@@ -87,33 +64,7 @@ namespace CinemaApp.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> RemoveFromWatchlist(string movieId)
         {
-            Guid movieGuid = Guid.Empty;
-            if (!this.IsGuidIdValid(movieId, ref movieGuid))
-            {
-                return this.RedirectToAction(nameof(Index), "Movie");
-            }
 
-            Movie? movie = await this.dbContext
-                .Movies
-                .FirstOrDefaultAsync(m => m.Id == movieGuid);
-            if (movie == null)
-            {
-                return this.RedirectToAction(nameof(Index), "Movie");
-            }
-
-            Guid userGuid = Guid.Parse(this.userManager.GetUserId(this.User)!);
-
-            ApplicationUserMovie? applicationUserMovie = await this.dbContext
-                .UsersMovies
-                .FirstOrDefaultAsync(um =>
-                    um.ApplicationUserId == userGuid
-                    && um.MovieId == movieGuid);
-
-            if (applicationUserMovie != null)
-            {
-                this.dbContext.UsersMovies.Remove(applicationUserMovie);
-                await this.dbContext.SaveChangesAsync();
-            }
 
             return this.RedirectToAction(nameof(Index));
         }

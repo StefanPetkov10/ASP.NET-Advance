@@ -48,6 +48,7 @@ namespace CinemaApp.Web.Infrastructure.Extensions
                 }
             }
         }
+
         public static void RegisterUserDefinedServices(this IServiceCollection services, Assembly serviceAssembly)
         {
             Type[] serviceInterfaceTypes = serviceAssembly

@@ -1,4 +1,6 @@
-﻿namespace CinemaApp.Data.Repository.Interfaces
+﻿using System.Linq.Expressions;
+
+namespace CinemaApp.Data.Repository.Interfaces
 {
     public interface IRepository<TType, TId>
     {
@@ -8,6 +10,9 @@
 
         IEnumerable<TType> GetAll();
         Task<IEnumerable<TType>> GetAllAsync();
+
+        TType FirstOrDefault(Func<TType, bool> predicate);
+        Task<TType> FirstOrDefaultAsync(Expression<Func<TType, bool>> predicate);
 
         IQueryable<TType> GetAllAttached();
 
