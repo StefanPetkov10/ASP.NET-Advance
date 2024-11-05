@@ -49,8 +49,7 @@ namespace CinemaApp.Web.Controllers
                 .AddMovieToUserWatchListAsync(movieId, userId);
             if (!result)
             {
-                //TODO: Imolement a way to transfer the Error Message to the View
-                ViewData["ErrorMessage"] = AddToWatchlistNotSuccessfulMessage;
+                TempData[nameof(AddToWatchlistNotSuccessfulMessage)] = AddToWatchlistNotSuccessfulMessage;
                 return this.RedirectToAction("Index", "Movie");
             }
 

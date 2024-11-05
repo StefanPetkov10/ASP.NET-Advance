@@ -7,6 +7,7 @@
             this.Id = Guid.NewGuid();
             this.MovieCinemas = new HashSet<CinemaMovie>();
             this.MovieUsersWishlist = new HashSet<ApplicationUserMovie>();
+            this.Tickets = new HashSet<Ticket>();
         }
 
         public Guid Id { get; set; }
@@ -28,5 +29,7 @@
         public virtual ICollection<CinemaMovie> MovieCinemas { get; set; }
 
         public virtual ICollection<ApplicationUserMovie> MovieUsersWishlist { get; set; }
+
+        public virtual ICollection<Ticket> Tickets { get; set; }
     }
 }

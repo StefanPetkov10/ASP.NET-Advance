@@ -1,12 +1,14 @@
 ﻿@using CinemaApp.Web.ViewModels.Movie;
+@using static CinemaApp.Common.ErrorMessages.Watchlist;
 @model IEnumerable<AllMoviesViewModel>
 
-@*  @if(String.IsNullOrEmpty(ViewData["Message"] as string) == false)
+@if (TempData[nameof(AddToWatchlistNotSuccessfulMessage)] != null)
  {
-<div class="alert alert-danger" role="alert">
-    @ViewData["ErrorMessage"]
-</div>
- } *@
+     //TODO: Add a script to hide the alert after 5 seconds
+    <div class="alert alert-danger" role="alert">
+            @TempData[nameof(AddToWatchlistNotSuccessfulMessage)]
+    </div>
+ }
 
 <h2>All Movies</h2>
 
