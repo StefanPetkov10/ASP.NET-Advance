@@ -1,5 +1,4 @@
-﻿using CinemaApp.Data;
-using CinemaApp.Data.Models;
+﻿using CinemaApp.Data.Models;
 using CinemaApp.Services.Data.Interfaces;
 using CinemaApp.Web.ViewModels.Watchlist;
 using Microsoft.AspNetCore.Authorization;
@@ -14,14 +13,11 @@ namespace CinemaApp.Web.Controllers
     public class WatchlistController : BaseController
     {
         private readonly IWatchlistService watchlistService;
-
-        private readonly CinemaDbContext dbContext;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public WatchlistController(IWatchlistService watchlistService, CinemaDbContext dbContext, UserManager<ApplicationUser> userManager)
+        public WatchlistController(IWatchlistService watchlistService, UserManager<ApplicationUser> userManager)
         {
             this.watchlistService = watchlistService;
-            this.dbContext = dbContext;
             this.userManager = userManager;
         }
 
@@ -64,7 +60,20 @@ namespace CinemaApp.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> RemoveFromWatchlist(string movieId)
         {
+            string userId = this.userManager.GetUserId(this.User)!;
+            if (String.IsNullOrEmpty(userId))
+            {
+                return RedirectToAction("/Identity/Account/Login");
+            }
 
+            bool result = await this.watchlistService
+                .RemoveMovieFromUserWatchListAsync(movieId, userId);
+
+            if (!result)
+            {
+                //TODO: Imolement a way to transfer the Error Message to the View
+                return this.RedirectToAction("Index", "Movie");
+            }
 
             return this.RedirectToAction(nameof(Index));
         }

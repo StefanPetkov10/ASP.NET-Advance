@@ -68,7 +68,32 @@ namespace CinemaApp.Services.Data
 
         public async Task<bool> RemoveMovieFromUserWatchListAsync(string? movieId, string userId)
         {
-            throw new NotImplementedException();
+            Guid movieGuid = Guid.Empty;
+            if (!this.IsGuidIdValid(movieId, ref movieGuid))
+            {
+                return false;
+            }
+
+            Movie? movie = await this.movieRepository
+                .GetByIdAsync(movieGuid);
+            if (movie == null)
+            {
+                return false;
+            }
+
+            Guid userGuid = Guid.Parse(userId);
+
+            //TODO: Implement Soft-Delete
+            ApplicationUserMovie? applicationUserMovie = await this.userMovieRepository
+                .FirstOrDefaultAsync(um => um.MovieId == movieGuid &&
+                                           um.ApplicationUserId == userGuid);
+
+            if (applicationUserMovie != null)
+            {
+                await this.userMovieRepository.DeleteAsync(applicationUserMovie);
+            }
+
+            return true;
         }
     }
 }

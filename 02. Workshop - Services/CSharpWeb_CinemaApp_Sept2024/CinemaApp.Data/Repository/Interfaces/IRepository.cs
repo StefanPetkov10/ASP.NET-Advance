@@ -22,8 +22,8 @@ namespace CinemaApp.Data.Repository.Interfaces
         void AddRange(TType[] entities);
         Task AddRangeAsync(TType[] entities);
 
-        bool Delete(TId id);
-        Task<bool> DeleteAsync(TId id);
+        bool Delete(TType entity);
+        Task<bool> DeleteAsync(TType entity);
 
         bool Update(TType entity);
         Task<bool> UpdateAsync(TType entity);
