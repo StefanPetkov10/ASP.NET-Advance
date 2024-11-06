@@ -2,15 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System.ComponentModel.DataAnnotations;
-using CinemaApp.Data.Models;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-
 namespace CinemaApp.Web.Areas.Identity.Pages.Account
 {
+    using System.ComponentModel.DataAnnotations;
+    using Data.Models;
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.RazorPages;
+
     public class LoginModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -79,11 +79,6 @@ namespace CinemaApp.Web.Areas.Identity.Pages.Account
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
-            }
-
-            if (User.Identity?.IsAuthenticated ?? false)
-            {
-                Response.Redirect("/");
             }
 
             returnUrl ??= Url.Content("~/");
