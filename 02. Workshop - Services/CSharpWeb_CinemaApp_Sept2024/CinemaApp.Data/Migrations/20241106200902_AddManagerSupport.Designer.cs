@@ -4,6 +4,7 @@ using CinemaApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CinemaApp.Data.Migrations
 {
     [DbContext(typeof(CinemaDbContext))]
-    partial class CinemaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241106200902_AddManagerSupport")]
+    partial class AddManagerSupport
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -126,25 +129,25 @@ namespace CinemaApp.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("800c2151-f30a-45e1-9016-4f4df181302b"),
+                            Id = new Guid("cb674835-5bcf-4970-aa24-4661f05df530"),
                             Location = "Sofia",
                             Name = "Cinema City"
                         },
                         new
                         {
-                            Id = new Guid("129233a3-f122-4c30-a29e-564dd0a05581"),
+                            Id = new Guid("3ab441af-d450-47e5-8526-4f68f190d392"),
                             Location = "Plovdiv",
                             Name = "Cine Grand"
                         },
                         new
                         {
-                            Id = new Guid("9635e8f6-9c4a-4ca7-9e23-a569e475f82d"),
+                            Id = new Guid("8885f849-904b-4119-aef0-b5caeb4a2884"),
                             Location = "Varna",
                             Name = "Cinema City"
                         },
                         new
                         {
-                            Id = new Guid("05008b2a-8e54-4790-b1cc-ab45dc19d000"),
+                            Id = new Guid("4ed54923-086b-4f8c-8a02-e9415cd85497"),
                             Location = "Burgas",
                             Name = "Cine Grand"
                         });
@@ -189,7 +192,7 @@ namespace CinemaApp.Data.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Managers");
+                    b.ToTable("Manager");
                 });
 
             modelBuilder.Entity("CinemaApp.Data.Models.Movie", b =>
@@ -237,7 +240,7 @@ namespace CinemaApp.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("9e7b573a-601f-4edc-b4e7-068d8dde0872"),
+                            Id = new Guid("bc6b7b95-fc2c-4038-a5af-4c768ac1d6b7"),
                             Description = "A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.",
                             Director = "Lana Wachowski, Lilly Wachowski",
                             Duration = 136,
@@ -247,7 +250,7 @@ namespace CinemaApp.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("31f4b8cc-9695-497c-ba06-e50b14a4accd"),
+                            Id = new Guid("9b4bda78-9a8f-454c-a462-2c774bf4db7f"),
                             Description = "Two imprisoned",
                             Director = "Frank Darabont",
                             Duration = 142,

@@ -26,5 +26,11 @@
             public const int LocationMinLength = 3;
 
         }
+
+        public static class Manager
+        {
+            public const int PhoneNumberMinLength = 6;
+            public const int PhoneNumberMaxLength = 15;
+        }
     }
 }
