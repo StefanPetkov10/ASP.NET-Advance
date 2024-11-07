@@ -7,12 +7,12 @@
 @inject IManagerService managerService;
 
 @if (TempData[nameof(AddToWatchlistNotSuccessfulMessage)] != null)
- {
-     //TODO: Add a script to hide the alert after 5 seconds
+{
+    //TODO: Add a script to hide the alert after 5 seconds
     <div class="alert alert-danger" role="alert">
-            @TempData[nameof(AddToWatchlistNotSuccessfulMessage)]
+        @TempData[nameof(AddToWatchlistNotSuccessfulMessage)]
     </div>
- }
+}
 
 <h2>All Movies</h2>
 
@@ -39,14 +39,16 @@
 
                     @if (User?.Identity?.IsAuthenticated ?? false)
                     {
-                        @if(await this.managerService.IsUserManagerAsync(this.User.GetUserId()))
-                        {
-                            <a asp-action="AddToProgram" asp-route-id="@movie.Id" class="btn btn-primary">+Program</a>
-                        }
                         <form asp-controller="Watchlist" asp-action="AddToWatchlist" method="post" class="d-inline">
                             <input type="hidden" name="movieId" value="@movie.Id" />
                             <button type="submit" class="btn btn-warning">+Watchlist</button>
                         </form>
+                        @if (await this.managerService.IsUserManagerAsync(this.User.GetUserId()))
+                        {
+                            <a asp-action="AddToProgram" asp-route-id="@movie.Id" class="btn btn-info">+Program</a>
+                            <a asp-action="Edit" asp-route-id="@movie.Id" class="btn btn-primary">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@movie.Id" class="btn btn-danger">Delete</a>
+                        }
                     }
                 </td>
             </tr>
@@ -54,4 +56,10 @@
     </tbody>
 </table>
 
-<a asp-action="Create" class="btn btn-primary">Add New Movie</a>
+@if (User?.Identity?.IsAuthenticated ?? false)
+{
+    @if (await this.managerService.IsUserManagerAsync(this.User.GetUserId()))
+    {
+        <a asp-action="Create" class="btn btn-primary">Add New Movie</a>
+    }
+}

@@ -15,7 +15,9 @@ namespace CinemaApp.Web.Controllers
         private readonly IWatchlistService watchlistService;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public WatchlistController(IWatchlistService watchlistService, UserManager<ApplicationUser> userManager)
+        public WatchlistController(IWatchlistService watchlistService,
+            UserManager<ApplicationUser> userManager, IManagerService managerService)
+            : base(managerService)
         {
             this.watchlistService = watchlistService;
             this.userManager = userManager;

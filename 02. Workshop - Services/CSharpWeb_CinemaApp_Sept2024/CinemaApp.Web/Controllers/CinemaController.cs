@@ -1,5 +1,4 @@
 ﻿using CinemaApp.Services.Data.Interfaces;
-using CinemaApp.Web.Infrastructure.Extensions;
 using CinemaApp.Web.ViewModels.Cinema;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,11 +8,10 @@ namespace CinemaApp.Web.Controllers
     public class CinemaController : BaseController
     {
         private readonly ICinemaService cinemaService;
-        private readonly IManagerService managerService;
-        public CinemaController(ICinemaService cinemaService, IManagerService userManager)
+        public CinemaController(ICinemaService cinemaService, IManagerService managerService)
+            : base(managerService)
         {
             this.cinemaService = cinemaService;
-            this.managerService = userManager;
         }
 
         [HttpGet]
@@ -29,8 +27,7 @@ namespace CinemaApp.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Create()
         {
-            string? userId = this.User.GetUserId();
-            bool isUserManager = await this.managerService.IsUserManagerAsync(userId);
+            bool isUserManager = await this.IsUserManagerAsync();
             if (!isUserManager)
             {
                 return RedirectToAction(nameof(Index));
@@ -43,8 +40,7 @@ namespace CinemaApp.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Create(AddCinemaFormModel inputModel)
         {
-            string? userId = this.User.GetUserId();
-            bool isUserManager = await this.managerService.IsUserManagerAsync(userId);
+            bool isUserManager = await this.IsUserManagerAsync();
             if (!isUserManager)
             {
                 return RedirectToAction(nameof(Index));
@@ -86,11 +82,8 @@ namespace CinemaApp.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Manage()
         {
-            string userId = this.User.GetUserId();
-            bool isManager = await this.managerService
-                 .IsUserManagerAsync(userId);
-
-            if (!isManager)
+            bool isUserManager = await this.IsUserManagerAsync();
+            if (!isUserManager)
             {
                 return this.RedirectToAction(nameof(Index));
             }
