@@ -93,5 +93,18 @@ namespace CinemaApp.Web.Controllers
 
             return this.View(cinemas);
         }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Edit(string? id)
+        {
+            bool isUserManager = await this.IsUserManagerAsync();
+            if (!isUserManager)
+            {
+                //TODO: Implement notification for error and warning messages
+                return this.RedirectToAction(nameof(Index));
+            }
+
+        }
     }
 }
