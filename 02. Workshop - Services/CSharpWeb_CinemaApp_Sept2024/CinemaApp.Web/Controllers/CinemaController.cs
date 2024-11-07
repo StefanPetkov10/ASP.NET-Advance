@@ -1,5 +1,7 @@
 ﻿using CinemaApp.Services.Data.Interfaces;
+using CinemaApp.Web.Infrastructure.Extensions;
 using CinemaApp.Web.ViewModels.Cinema;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CinemaApp.Web.Controllers
@@ -7,9 +9,11 @@ namespace CinemaApp.Web.Controllers
     public class CinemaController : BaseController
     {
         private readonly ICinemaService cinemaService;
-        public CinemaController(ICinemaService cinemaService)
+        private readonly IManagerService managerService;
+        public CinemaController(ICinemaService cinemaService, IManagerService userManager)
         {
             this.cinemaService = cinemaService;
+            this.managerService = userManager;
         }
 
         [HttpGet]
@@ -22,14 +26,30 @@ namespace CinemaApp.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Create()
         {
+            string? userId = this.User.GetUserId();
+            bool isUserManager = await this.managerService.IsUserManagerAsync(userId);
+            if (!isUserManager)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Create(AddCinemaFormModel inputModel)
         {
+            string? userId = this.User.GetUserId();
+            bool isUserManager = await this.managerService.IsUserManagerAsync(userId);
+            if (!isUserManager)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
             if (this.ModelState.IsValid == false)
             {
                 return View(inputModel);
@@ -60,6 +80,25 @@ namespace CinemaApp.Web.Controllers
             }
 
             return this.View(viewModel);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Manage()
+        {
+            string userId = this.User.GetUserId();
+            bool isManager = await this.managerService
+                 .IsUserManagerAsync(userId);
+
+            if (!isManager)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            IEnumerable<CinemaIndexViewModel> cinemas =
+                await this.cinemaService.IndexGetAllOrderedByLocationAsync();
+
+            return this.View(cinemas);
         }
     }
 }
