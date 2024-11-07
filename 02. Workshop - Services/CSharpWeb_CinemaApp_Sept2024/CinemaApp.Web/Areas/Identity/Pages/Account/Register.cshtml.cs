@@ -1,7 +1,6 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
-
 using System.ComponentModel.DataAnnotations;
 using CinemaApp.Data.Models;
 using Microsoft.AspNetCore.Identity;
@@ -10,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CinemaApp.Web.Areas.Identity.Pages.Account
 {
+
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -17,13 +17,11 @@ namespace CinemaApp.Web.Areas.Identity.Pages.Account
         private readonly IUserStore<ApplicationUser> _userStore;
         private readonly ILogger<RegisterModel> _logger;
 
-
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger)
-
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -61,8 +59,8 @@ namespace CinemaApp.Web.Areas.Identity.Pages.Account
 
             [Required]
             [StringLength(50, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 3)]
-            [Display(Name = "UserName")]
-            public string UserName { get; set; }
+            [Display(Name = "Username")]
+            public string Username { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -85,13 +83,10 @@ namespace CinemaApp.Web.Areas.Identity.Pages.Account
         }
 
 
+#pragma warning disable CS1998
         public async Task OnGetAsync(string returnUrl = null)
+#pragma warning restore CS1998
         {
-            if (User.Identity?.IsAuthenticated ?? false)
-            {
-                Response.Redirect("/");
-            }
-
             ReturnUrl = returnUrl;
         }
 
@@ -103,8 +98,8 @@ namespace CinemaApp.Web.Areas.Identity.Pages.Account
                 var user = CreateUser();
                 user.Email = Input.Email;
 
-                await _userStore.SetUserNameAsync(user, Input.UserName, CancellationToken.None);
-                var result = await _userManager.CreateAsync(user, Input.UserName);
+                await _userStore.SetUserNameAsync(user, Input.Username, CancellationToken.None);
+                var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
@@ -114,7 +109,6 @@ namespace CinemaApp.Web.Areas.Identity.Pages.Account
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
-
                 }
                 foreach (var error in result.Errors)
                 {
