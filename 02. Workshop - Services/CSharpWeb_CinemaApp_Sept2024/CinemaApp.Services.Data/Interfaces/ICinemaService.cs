@@ -10,6 +10,8 @@ namespace CinemaApp.Services.Data.Interfaces
 
         Task<CinemaDetailsViewModel?> GetCinemaDetailsByIdAsync(Guid id);
 
+        Task<EditCinemaFormModel?> GetCinemaForByIdAsync(Guid id);
 
+        Task<bool> EditCinemaAsync(EditCinemaFormModel model);
     }
 }

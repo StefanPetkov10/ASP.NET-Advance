@@ -58,6 +58,7 @@ namespace CinemaApp.Services.Data
 
         }
 
+
         public async Task<IEnumerable<CinemaIndexViewModel>> IndexGetAllOrderedByLocationAsync()
         {
             IEnumerable<CinemaIndexViewModel> allCinemas = await this.cinemaRepository
@@ -67,6 +68,24 @@ namespace CinemaApp.Services.Data
                .ToArrayAsync();
 
             return allCinemas;
+        }
+        public async Task<EditCinemaFormModel?> GetCinemaForByIdAsync(Guid id)
+        {
+            EditCinemaFormModel? cinemaModel = await this.cinemaRepository
+               .GetAllAttached()
+               .To<EditCinemaFormModel>()
+               .FirstOrDefaultAsync(c => c.Id.ToLower() == id.ToString().ToLower());
+
+            return cinemaModel;
+        }
+
+        public async Task<bool> EditCinemaAsync(EditCinemaFormModel model)
+        {
+            Cinema cinemaEntity = AutoMapperConfig.MapperInstance
+                .Map<EditCinemaFormModel, Cinema>(model);
+
+            bool result = await this.cinemaRepository.UpdateAsync(cinemaEntity);
+            return result;
         }
     }
 }

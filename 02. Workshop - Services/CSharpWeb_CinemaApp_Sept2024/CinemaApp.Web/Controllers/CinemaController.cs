@@ -105,6 +105,44 @@ namespace CinemaApp.Web.Controllers
                 return this.RedirectToAction(nameof(Index));
             }
 
+            Guid cinemaGuid = Guid.Empty;
+            bool isIdValid = this.IsGuidIdValid(id, ref cinemaGuid);
+            if (!isIdValid)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            EditCinemaFormModel? cinemaModel = await this.cinemaService
+                .GetCinemaForByIdAsync(cinemaGuid);
+
+            return this.View(cinemaModel);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Edit(EditCinemaFormModel formModel)
+        {
+            bool isUserManager = await this.IsUserManagerAsync();
+            if (!isUserManager)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(formModel);
+            }
+
+            bool isUpdated = await this.cinemaService
+                .EditCinemaAsync(formModel);
+
+            if (!isUpdated)
+            {
+                ModelState.AddModelError(string.Empty, "Unexpected error occurred while updating the cinema! Please contact admin!");
+                return this.View(formModel);
+            }
+
+            return this.RedirectToAction(nameof(Details), "Cinema", new { id = formModel.Id });
         }
     }
 }
