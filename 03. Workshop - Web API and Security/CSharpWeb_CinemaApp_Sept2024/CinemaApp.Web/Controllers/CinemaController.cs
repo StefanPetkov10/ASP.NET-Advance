@@ -109,11 +109,15 @@ namespace CinemaApp.Web.Controllers
             bool isIdValid = this.IsGuidIdValid(id, ref cinemaGuid);
             if (!isIdValid)
             {
-                return this.RedirectToAction(nameof(Index));
+                return this.RedirectToAction(nameof(Manage));
             }
 
             EditCinemaFormModel? cinemaModel = await this.cinemaService
                 .GetCinemaForByIdAsync(cinemaGuid);
+            if (cinemaModel == null)
+            {
+                return this.RedirectToAction(nameof(Manage));
+            }
 
             return this.View(cinemaModel);
         }

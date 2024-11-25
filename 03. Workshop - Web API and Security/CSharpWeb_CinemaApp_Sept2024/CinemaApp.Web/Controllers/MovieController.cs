@@ -155,5 +155,34 @@ namespace CinemaApp.Web.Controllers
 
             return this.RedirectToAction(nameof(Index), "Cinema");
         }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Edit(string? id)
+        {
+            bool isManager = await this.IsUserManagerAsync();
+            if (!isManager)
+            {
+                // TODO: Implement notifications for error and warning messages!
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            Guid movieGuid = Guid.Empty;
+            bool isIdValid = this.IsGuidIdValid(id, ref movieGuid);
+            if (!isIdValid)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            EditMovieFormModel? formModel = await this.movieService
+                .GetEditMovieFormModelByIdAsync(movieGuid);
+            if (formModel == null)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            return this.View(formModel);
+        }
+
     }
 }
