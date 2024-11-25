@@ -31,6 +31,7 @@ namespace CinemaApp.Services.Data
                .GetAllAttached()
                .Include(cm => cm.CinemaMovies)
                .ThenInclude(m => m.Movie)
+               .Where(c => c.IsDeleted == false)
                .FirstOrDefaultAsync(c => c.Id == id);
 
             // Invalid(non-existing) GUID in the URL
@@ -50,19 +51,17 @@ namespace CinemaApp.Services.Data
                     })
                     .ToArray()
                 };
-
                 //AutoMapperConfig.MapperInstance.Map(cinema, viewModel);
             }
 
             return viewModel;
-
         }
-
 
         public async Task<IEnumerable<CinemaIndexViewModel>> IndexGetAllOrderedByLocationAsync()
         {
             IEnumerable<CinemaIndexViewModel> allCinemas = await this.cinemaRepository
                .GetAllAttached()
+               .Where(c => c.IsDeleted == false)
                .OrderBy(c => c.Location)
                .To<CinemaIndexViewModel>()
                .ToArrayAsync();
@@ -73,6 +72,7 @@ namespace CinemaApp.Services.Data
         {
             EditCinemaFormModel? cinemaModel = await this.cinemaRepository
                .GetAllAttached()
+               .Where(c => c.IsDeleted == false)
                .To<EditCinemaFormModel>()
                .FirstOrDefaultAsync(c => c.Id.ToLower() == id.ToString().ToLower());
 
