@@ -144,5 +144,30 @@ namespace CinemaApp.Web.Controllers
 
             return this.RedirectToAction(nameof(Details), "Cinema", new { id = formModel.Id });
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(string? id)
+        {
+            bool isManager = await this.IsUserManagerAsync();
+            if (!isManager)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            Guid cinemaGuid = Guid.Empty;
+            if (!this.IsGuidIdValid(id, ref cinemaGuid))
+            {
+                return this.RedirectToAction(nameof(Manage));
+            }
+
+            DeleteCinemaViewModel? cinemaToDeleteViewModel =
+                await this.cinemaService.GetCinemaForDeleteByIdAsync(cinemaGuid);
+            if (cinemaToDeleteViewModel == null)
+            {
+                return this.RedirectToAction(nameof(Manage));
+            }
+
+            return this.View(cinemaToDeleteViewModel);
+        }
     }
 }

@@ -13,5 +13,9 @@ namespace CinemaApp.Services.Data.Interfaces
         Task<EditCinemaFormModel?> GetCinemaForByIdAsync(Guid id);
 
         Task<bool> EditCinemaAsync(EditCinemaFormModel model);
+
+        Task<DeleteCinemaViewModel?> GetCinemaForDeleteByIdAsync(Guid id);
+
+        Task<bool> SoftDeleteCinemaAsync(Guid id);
     }
 }

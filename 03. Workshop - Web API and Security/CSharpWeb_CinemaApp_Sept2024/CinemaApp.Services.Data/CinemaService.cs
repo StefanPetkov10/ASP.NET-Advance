@@ -87,5 +87,29 @@ namespace CinemaApp.Services.Data
             bool result = await this.cinemaRepository.UpdateAsync(cinemaEntity);
             return result;
         }
+
+        public async Task<DeleteCinemaViewModel?> GetCinemaForDeleteByIdAsync(Guid id)
+        {
+            DeleteCinemaViewModel? cinemaToDelete = await this.cinemaRepository
+                .GetAllAttached()
+                .Where(c => c.IsDeleted == false)
+                .To<DeleteCinemaViewModel>()
+                .FirstOrDefaultAsync(c => c.Id.ToLower() == id.ToString().ToLower());
+
+            return cinemaToDelete;
+        }
+
+        public async Task<bool> SoftDeleteCinemaAsync(Guid id)
+        {
+            Cinema? cinemaToDelete = await this.cinemaRepository
+                .FirstOrDefaultAsync(c => c.Id.ToString().ToLower() == id.ToString().ToLower());
+            if (cinemaToDelete == null)
+            {
+                return false;
+            }
+
+            cinemaToDelete.IsDeleted = true;
+            return await this.cinemaRepository.UpdateAsync(cinemaToDelete);
+        }
     }
 }
