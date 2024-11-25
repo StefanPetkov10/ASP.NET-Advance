@@ -9,7 +9,7 @@
             public const string GenreRequiredMessage = "Movie genre is required!";
             public const string ReleaseDateRequiredMessage = "Release date is required in format MM/yyyy!";
             public const string DirectorRequiredMessage = "Director name is required!";
-            public const string DurationRangeMessage = "Plece specify movie duration!";
+            public const string DurationRangeMessage = "Please specify movie duration!";
         }
     }
 }
