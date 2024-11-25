@@ -14,6 +14,8 @@
 
         public string Location { get; set; } = null!;
 
+        public bool IsDeleted { get; set; }
+
         public virtual ICollection<CinemaMovie> CinemaMovies { get; set; }
         public virtual ICollection<Ticket> Tickets { get; set; }
     }
