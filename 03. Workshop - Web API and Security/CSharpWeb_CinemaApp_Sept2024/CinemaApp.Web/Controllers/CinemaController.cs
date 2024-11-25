@@ -146,6 +146,7 @@ namespace CinemaApp.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Delete(string? id)
         {
             bool isManager = await this.IsUserManagerAsync();
