@@ -184,5 +184,30 @@ namespace CinemaApp.Web.Controllers
             return this.View(formModel);
         }
 
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Edit(EditMovieFormModel formModel)
+        {
+            bool isManager = await this.IsUserManagerAsync();
+            if (!isManager)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return this.View(formModel);
+            }
+
+            bool isUpdated = await this.movieService
+                .EditMovieAsync(formModel);
+            if (!isUpdated)
+            {
+                ModelState.AddModelError(string.Empty, "Unexpected error occurred while updating the cinema! Please contact administrator");
+                return this.View(formModel);
+            }
+
+            return this.RedirectToAction(nameof(Details), new { id = formModel.Id });
+        }
     }
 }

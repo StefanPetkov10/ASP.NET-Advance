@@ -7,6 +7,8 @@ using CinemaApp.Web.ViewModels.Cinema;
 using CinemaApp.Web.ViewModels.Movie;
 using Microsoft.EntityFrameworkCore;
 
+using static CinemaApp.Common.ApplicationConstants;
+
 using static CinemaApp.Common.EntityValidationConstants.Movie;
 
 namespace CinemaApp.Services.Data
@@ -160,6 +162,51 @@ namespace CinemaApp.Services.Data
             }
             await this.cinemaMovieRepository.AddRangeAsync(entitiesToAdd.ToArray());
             return true;
+        }
+
+        public async Task<EditMovieFormModel?> GetEditMovieFormModelByIdAsync(Guid id)
+        {
+            // TODO: Check soft delete
+            EditMovieFormModel? editMovieFormModel = await this.movieRepository
+                .GetAllAttached()
+                .To<EditMovieFormModel>()
+                .FirstOrDefaultAsync(m => m.Id.ToLower() == id.ToString().ToLower());
+            if (editMovieFormModel != null &&
+                editMovieFormModel.ImageUrl.Equals(noImageUrl))
+            {
+                editMovieFormModel.ImageUrl = "No image";
+            }
+
+            return editMovieFormModel;
+        }
+
+        public async Task<bool> EditMovieAsync(EditMovieFormModel formModel)
+        {
+            Guid movieGuid = Guid.Empty;
+            if (!this.IsGuidIdValid(formModel.Id, ref movieGuid))
+            {
+                return false;
+            }
+
+            Movie editedMovie = AutoMapperConfig.MapperInstance.Map<Movie>(formModel);
+            editedMovie.Id = movieGuid;
+
+            bool isReleaseDateValid = DateTime.TryParseExact(formModel.ReleaseDate, ReleaseDateFormat,
+                CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime releaseDate);
+            if (!isReleaseDateValid)
+            {
+                return false;
+            }
+
+            editedMovie.ReleaseDate = releaseDate;
+
+            if (formModel.ImageUrl == null ||
+                formModel.ImageUrl.Equals("No image"))
+            {
+                editedMovie.ImageUrl = noImageUrl;
+            }
+
+            return await this.movieRepository.UpdateAsync(editedMovie);
         }
     }
 }
