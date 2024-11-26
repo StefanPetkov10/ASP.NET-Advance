@@ -33,6 +33,12 @@
             public const int PhoneNumberMaxLength = 15;
         }
 
+        public static class CinemaMovie
+        {
+            public const int AvailableTicketsMinValue = 0;
+            public const int AvailableTicketsMaxValue = 10000;
+        }
+
         public static class Ticket
         {
             public const int CountMinValue = 1;
