@@ -26,6 +26,11 @@ namespace CinemaApp.Data.Configuration
                 .WithMany(m => m.MovieCinemas)
                 .HasForeignKey(cm => cm.MovieId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Property(cm => cm.AvailableTickets)
+                .IsRequired()
+                .HasDefaultValue(0);
         }
     }
 }

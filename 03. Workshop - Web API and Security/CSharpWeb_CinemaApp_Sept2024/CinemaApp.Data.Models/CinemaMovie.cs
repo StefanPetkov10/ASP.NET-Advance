@@ -11,5 +11,7 @@
         public virtual Movie Movie { get; set; } = null!;
 
         public bool IsDeleted { get; set; }
+
+        public int AvailableTickets { get; set; }
     }
 }
