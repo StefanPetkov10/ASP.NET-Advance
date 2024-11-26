@@ -40,6 +40,7 @@ namespace CinemaApp.Services.Data
             {
                 viewModel = new CinemaDetailsViewModel
                 {
+                    Id = cinema.Id.ToString(),
                     Name = cinema.Name,
                     Location = cinema.Location,
                     Movies = cinema.CinemaMovies
@@ -47,7 +48,9 @@ namespace CinemaApp.Services.Data
                     .Select(cm => new CinemaMovieViewModel
                     {
                         Title = cm.Movie.Title,
-                        Duration = cm.Movie.Duration
+                        Genre = cm.Movie.Genre,
+                        Duration = cm.Movie.Duration,
+                        Description = cm.Movie.Description
                     })
                     .ToArray()
                 };
