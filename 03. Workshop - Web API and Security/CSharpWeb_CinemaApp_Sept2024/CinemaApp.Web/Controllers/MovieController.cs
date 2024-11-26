@@ -209,5 +209,21 @@ namespace CinemaApp.Web.Controllers
 
             return this.RedirectToAction(nameof(Details), new { id = formModel.Id });
         }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Manage()
+        {
+            bool isManager = await this.IsUserManagerAsync();
+            if (!isManager)
+            {
+                return this.RedirectToAction(nameof(Index));
+            }
+
+            IEnumerable<AllMoviesViewModel> movies =
+                await this.movieService.GetAllMoviesAsync();
+
+            return this.View(movies);
+        }
     }
 }
