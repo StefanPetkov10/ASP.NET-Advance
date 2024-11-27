@@ -37,4 +37,8 @@
     <ProjectReference Include="..\CinemaApp.Web.ViewModels\CinemaApp.Web.ViewModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Ticket\" />
+  </ItemGroup>
+
 </Project>
