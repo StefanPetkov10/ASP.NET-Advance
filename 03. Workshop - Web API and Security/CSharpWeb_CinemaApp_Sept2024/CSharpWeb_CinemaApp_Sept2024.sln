@@ -23,7 +23,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{B8
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CinemaApp.Services.Data", "CinemaApp.Services.Data\CinemaApp.Services.Data.csproj", "{C21D11E7-B128-4E62-BE3B-ECB2A95F942B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CinemaApp.Services.Mapping", "CinemaApp.Services.Mapping\CinemaApp.Services.Mapping.csproj", "{A19F8122-6509-4E86-90EE-65ECF66CF239}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CinemaApp.Services.Mapping", "CinemaApp.Services.Mapping\CinemaApp.Services.Mapping.csproj", "{A19F8122-6509-4E86-90EE-65ECF66CF239}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CinemaApp.WebAPI", "CinemaApp.WebAPI\CinemaApp.WebAPI.csproj", "{B82D01BA-87A7-4FCC-9BF4-B627B92D8CC5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{A19F8122-6509-4E86-90EE-65ECF66CF239}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A19F8122-6509-4E86-90EE-65ECF66CF239}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A19F8122-6509-4E86-90EE-65ECF66CF239}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B82D01BA-87A7-4FCC-9BF4-B627B92D8CC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B82D01BA-87A7-4FCC-9BF4-B627B92D8CC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B82D01BA-87A7-4FCC-9BF4-B627B92D8CC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B82D01BA-87A7-4FCC-9BF4-B627B92D8CC5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -75,6 +81,7 @@ Global
 		{79ED5ADE-18F6-4DA9-9F49-015ABBB85C02} = {47270755-9C05-486A-BC98-08616090B94F}
 		{C21D11E7-B128-4E62-BE3B-ECB2A95F942B} = {B897E9A1-1D86-45A7-8134-EF4470A6FFAB}
 		{A19F8122-6509-4E86-90EE-65ECF66CF239} = {B897E9A1-1D86-45A7-8134-EF4470A6FFAB}
+		{B82D01BA-87A7-4FCC-9BF4-B627B92D8CC5} = {47270755-9C05-486A-BC98-08616090B94F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D1BAEB67-99D7-4354-AC62-2FD98D238FCF}
