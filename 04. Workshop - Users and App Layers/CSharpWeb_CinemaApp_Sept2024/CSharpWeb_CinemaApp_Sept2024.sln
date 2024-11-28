@@ -1,0 +1,89 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35303.130
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CinemaApp.Web", "CinemaApp.Web\CinemaApp.Web.csproj", "{C5D03817-0D4C-41BE-A229-9794ADFD4183}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CinemaApp.Web.ViewModels", "CinemaApp.Web.ViewModels\CinemaApp.Web.ViewModels.csproj", "{51B3664E-094F-4CCD-8BAF-D37311968D0E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CinemaApp.Data.Models", "CinemaApp.Data.Models\CinemaApp.Data.Models.csproj", "{BA77C9EB-9683-4791-B6A4-44CF3713FF9C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{47270755-9C05-486A-BC98-08616090B94F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{38F7E6E1-72B9-424D-A250-D8B48CD8F8C8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CinemaApp.Data", "CinemaApp.Data\CinemaApp.Data.csproj", "{75217D9C-FB37-43D8-B3A5-B01A4AB79D47}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CinemaApp.Web.Infrastructure", "CinemaApp.Web.Infrastructure\CinemaApp.Web.Infrastructure.csproj", "{79ED5ADE-18F6-4DA9-9F49-015ABBB85C02}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CinemaApp.Common", "CinemaApp.Common\CinemaApp.Common.csproj", "{A184873A-2AEB-4558-89FC-B4B65D679045}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{B897E9A1-1D86-45A7-8134-EF4470A6FFAB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CinemaApp.Services.Data", "CinemaApp.Services.Data\CinemaApp.Services.Data.csproj", "{C21D11E7-B128-4E62-BE3B-ECB2A95F942B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CinemaApp.Services.Mapping", "CinemaApp.Services.Mapping\CinemaApp.Services.Mapping.csproj", "{A19F8122-6509-4E86-90EE-65ECF66CF239}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CinemaApp.WebAPI", "CinemaApp.WebAPI\CinemaApp.WebAPI.csproj", "{B82D01BA-87A7-4FCC-9BF4-B627B92D8CC5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C5D03817-0D4C-41BE-A229-9794ADFD4183}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5D03817-0D4C-41BE-A229-9794ADFD4183}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5D03817-0D4C-41BE-A229-9794ADFD4183}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5D03817-0D4C-41BE-A229-9794ADFD4183}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51B3664E-094F-4CCD-8BAF-D37311968D0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51B3664E-094F-4CCD-8BAF-D37311968D0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51B3664E-094F-4CCD-8BAF-D37311968D0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51B3664E-094F-4CCD-8BAF-D37311968D0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA77C9EB-9683-4791-B6A4-44CF3713FF9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA77C9EB-9683-4791-B6A4-44CF3713FF9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA77C9EB-9683-4791-B6A4-44CF3713FF9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA77C9EB-9683-4791-B6A4-44CF3713FF9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75217D9C-FB37-43D8-B3A5-B01A4AB79D47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75217D9C-FB37-43D8-B3A5-B01A4AB79D47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75217D9C-FB37-43D8-B3A5-B01A4AB79D47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75217D9C-FB37-43D8-B3A5-B01A4AB79D47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79ED5ADE-18F6-4DA9-9F49-015ABBB85C02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79ED5ADE-18F6-4DA9-9F49-015ABBB85C02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79ED5ADE-18F6-4DA9-9F49-015ABBB85C02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79ED5ADE-18F6-4DA9-9F49-015ABBB85C02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A184873A-2AEB-4558-89FC-B4B65D679045}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A184873A-2AEB-4558-89FC-B4B65D679045}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A184873A-2AEB-4558-89FC-B4B65D679045}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A184873A-2AEB-4558-89FC-B4B65D679045}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C21D11E7-B128-4E62-BE3B-ECB2A95F942B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C21D11E7-B128-4E62-BE3B-ECB2A95F942B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C21D11E7-B128-4E62-BE3B-ECB2A95F942B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C21D11E7-B128-4E62-BE3B-ECB2A95F942B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A19F8122-6509-4E86-90EE-65ECF66CF239}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A19F8122-6509-4E86-90EE-65ECF66CF239}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A19F8122-6509-4E86-90EE-65ECF66CF239}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A19F8122-6509-4E86-90EE-65ECF66CF239}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B82D01BA-87A7-4FCC-9BF4-B627B92D8CC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B82D01BA-87A7-4FCC-9BF4-B627B92D8CC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B82D01BA-87A7-4FCC-9BF4-B627B92D8CC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B82D01BA-87A7-4FCC-9BF4-B627B92D8CC5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C5D03817-0D4C-41BE-A229-9794ADFD4183} = {47270755-9C05-486A-BC98-08616090B94F}
+		{51B3664E-094F-4CCD-8BAF-D37311968D0E} = {47270755-9C05-486A-BC98-08616090B94F}
+		{BA77C9EB-9683-4791-B6A4-44CF3713FF9C} = {38F7E6E1-72B9-424D-A250-D8B48CD8F8C8}
+		{75217D9C-FB37-43D8-B3A5-B01A4AB79D47} = {38F7E6E1-72B9-424D-A250-D8B48CD8F8C8}
+		{79ED5ADE-18F6-4DA9-9F49-015ABBB85C02} = {47270755-9C05-486A-BC98-08616090B94F}
+		{C21D11E7-B128-4E62-BE3B-ECB2A95F942B} = {B897E9A1-1D86-45A7-8134-EF4470A6FFAB}
+		{A19F8122-6509-4E86-90EE-65ECF66CF239} = {B897E9A1-1D86-45A7-8134-EF4470A6FFAB}
+		{B82D01BA-87A7-4FCC-9BF4-B627B92D8CC5} = {47270755-9C05-486A-BC98-08616090B94F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D1BAEB67-99D7-4354-AC62-2FD98D238FCF}
+	EndGlobalSection
+EndGlobal
