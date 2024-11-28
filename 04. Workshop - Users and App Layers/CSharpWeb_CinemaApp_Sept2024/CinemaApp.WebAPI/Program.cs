@@ -14,7 +14,7 @@ namespace CinemaApp.WebAPI
         {
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
             string connectionString = builder.Configuration.GetConnectionString("SQLServer");
-
+            string? clientOrigins = builder.Configuration.GetValue<string>("Client Origins:CinemaWebApp");
             // Add services to the container.
             builder.Services.AddDbContext<CinemaDbContext>(optins =>
             {
@@ -36,15 +36,17 @@ namespace CinemaApp.WebAPI
                         .AllowAnyOrigin();
                 });
 
-                cfg.AddPolicy("AllowMyServer", policyBld =>
+                if (!String.IsNullOrEmpty(clientOrigins))
                 {
-                    policyBld
-                        .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .AllowCredentials()
-                        .WithOrigins("https://localhost:7221");
-                });
-
+                    cfg.AddPolicy("AllowMyServer", policyBld =>
+                    {
+                        policyBld
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowCredentials()
+                            .WithOrigins(clientOrigins);
+                    });
+                }
             });
 
             builder.Services.RegisterRepositories(typeof(ApplicationUser).Assembly);
@@ -65,7 +67,10 @@ namespace CinemaApp.WebAPI
 
             app.UseAuthorization();
 
-            app.UseCors("AllowMyServer");
+            if (!String.IsNullOrEmpty(clientOrigins))
+            {
+                app.UseCors("AllowMyServer");
+            }
 
             app.MapControllers();
 

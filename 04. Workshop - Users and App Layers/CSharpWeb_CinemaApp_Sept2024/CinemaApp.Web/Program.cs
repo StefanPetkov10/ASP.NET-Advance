@@ -1,6 +1,5 @@
 using CinemaApp.Data;
 using CinemaApp.Data.Models;
-using CinemaApp.Services.Data;
 using CinemaApp.Services.Data.Interfaces;
 using CinemaApp.Services.Mapping;
 using CinemaApp.Web.Infrastructure.Extensions;
@@ -9,8 +8,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-string connectionString = builder.Configuration.GetConnectionString("SQLServer");
-
+string connectionString = builder.Configuration.GetConnectionString("SQLServer")!;
+string adminEmail = builder.Configuration.GetValue<string>("Administrator:Email")!;
+string adminUsername = builder.Configuration.GetValue<string>("Administrator:Username")!;
+string adminPassword = builder.Configuration.GetValue<string>("Administrator:Password")!;
 // Add services to the container.
 builder.Services.AddDbContext<CinemaDbContext>(optins =>
 {
@@ -42,7 +43,6 @@ builder.Services.AddScoped<IRepository<CinemaMovie, object>, BaseRepository<Cine
 builder.Services.AddScoped<IRepository<ApplicationUserMovie, object>, BaseRepository<ApplicationUserMovie, object>>();*/
 builder.Services.RegisterRepositories(typeof(ApplicationUser).Assembly);
 builder.Services.RegisterUserDefinedServices(typeof(IMovieService).Assembly);
-builder.Services.AddScoped<ICinemaService, CinemaService>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
@@ -67,6 +67,8 @@ app.UseRouting();
 //Authorization can work only if we know who uses the application -> We need Authentication
 app.UseAuthentication(); // First -> Who am I?
 app.UseAuthorization(); // Second -> What can I do?
+
+app.SeedAdministrator(adminEmail, adminUsername, adminPassword);
 
 app.MapControllerRoute(
     name: "default",
