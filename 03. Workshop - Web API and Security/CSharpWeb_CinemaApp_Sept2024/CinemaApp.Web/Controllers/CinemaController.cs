@@ -75,6 +75,8 @@ namespace CinemaApp.Web.Controllers
                 return this.RedirectToAction(nameof(Index));
             }
 
+            await this.AppendUserCookieAsync();
+
             return this.View(viewModel);
         }
 

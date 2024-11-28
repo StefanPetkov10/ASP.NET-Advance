@@ -2,6 +2,8 @@
 using CinemaApp.Web.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
+using static CinemaApp.Common.ApplicationConstants;
+
 namespace CinemaApp.Web.Controllers
 {
     public class BaseController : Controller
@@ -37,6 +39,12 @@ namespace CinemaApp.Web.Controllers
             bool isUserManager = await this.managerService.IsUserManagerAsync(userId);
 
             return isUserManager;
+        }
+
+        protected async Task AppendUserCookieAsync()
+        {
+            bool isManager = await this.IsUserManagerAsync();
+            this.HttpContext.Response.Cookies.Append(IsManagerCookieName, isManager.ToString());
         }
     }
 }

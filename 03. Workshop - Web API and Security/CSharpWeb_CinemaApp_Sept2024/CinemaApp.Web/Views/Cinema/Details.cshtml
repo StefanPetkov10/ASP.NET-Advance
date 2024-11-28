@@ -13,6 +13,10 @@
 <h2 class="my-4 text-center display-4">Cinema Program - @Model.Name</h2>
 <p class="text-center lead"><strong>Location:</strong> @Model.Location</p>
 
+<div id="manageTicketsModalContainer">
+    <partial name="_ManageTicketsModal" model="Model.Movies" />
+</div>
+
 <div class="container mt-5">
     @if (Model.Movies.Any())
     {

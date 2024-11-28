@@ -1,4 +1,5 @@
 ﻿using CinemaApp.Services.Data.Interfaces;
+using CinemaApp.Web.Infrastructure.Attributes;
 using CinemaApp.Web.ViewModels.Cinema;
 using CinemaApp.Web.ViewModels.CinemaMovie;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +23,7 @@ namespace CinemaApp.WebAPI.Controllers
         }
 
         [HttpGet("[action]/{id?}")]
-        //[ManagerOnly]
+        [ManagerOnly]
         [ProducesResponseType(typeof(CinemaDetailsViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -47,6 +48,7 @@ namespace CinemaApp.WebAPI.Controllers
         }
 
         [HttpPost("[action]")]
+        [ManagerOnly]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
