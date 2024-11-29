@@ -50,7 +50,7 @@ namespace CinemaApp.WebAPI
             });
 
             builder.Services.RegisterRepositories(typeof(ApplicationUser).Assembly);
-            builder.Services.RegisterUserDefinedServices(typeof(IMovieService).Assembly);
+            builder.Services.RegisterUserDefinedServicesWebApi(typeof(IMovieService).Assembly);
 
             var app = builder.Build();
 

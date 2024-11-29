@@ -4,6 +4,7 @@ using CinemaApp.Data.Repository.Interfaces;
 using CinemaApp.Services.Data.Interfaces;
 using CinemaApp.Services.Mapping;
 using CinemaApp.Web.ViewModels.Cinema;
+using CinemaApp.Web.ViewModels.CinemaMovie;
 using CinemaApp.Web.ViewModels.Movie;
 using Microsoft.EntityFrameworkCore;
 
@@ -207,6 +208,27 @@ namespace CinemaApp.Services.Data
             }
 
             return await this.movieRepository.UpdateAsync(editedMovie);
+        }
+
+        public async Task<AvailableTicketsViewModel?> GetAvailableTicketsByIdAsync(Guid cinemaId, Guid movieId)
+        {
+            CinemaMovie? cinemaMovie = await this.cinemaMovieRepository
+                .FirstOrDefaultAsync(cm => cm.MovieId == movieId &&
+                                                     cm.CinemaId == cinemaId);
+
+            AvailableTicketsViewModel availableTicketsViewModel = null;
+            if (cinemaMovie != null)
+            {
+                availableTicketsViewModel = new AvailableTicketsViewModel()
+                {
+                    CinemaId = cinemaId.ToString(),
+                    MovieId = movieId.ToString(),
+                    Quantity = 0,
+                    AvailableTickets = cinemaMovie.AvailableTickets
+                };
+            }
+
+            return availableTicketsViewModel;
         }
     }
 }
